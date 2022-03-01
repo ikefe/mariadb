@@ -1,5 +1,5 @@
-resource "aws_db_parameter_group" "default" {
-  name   = "mariadb"
+resource "aws_db_parameter_group" "default_parameter" {
+  name   = "mariadbparameter"
   family = "mariadb10.5"
 
   parameter {
@@ -8,8 +8,8 @@ resource "aws_db_parameter_group" "default" {
   }
 }
 
-resource "aws_db_subnet_group" "default" {
-  name       = "main"
+resource "aws_db_subnet_group" "default_subnet" {
+  name       = "mainsubnet"
   subnet_ids = [aws_subnet.private_1.id, aws_subnet.private_2.id]
 
   tags = {
@@ -26,8 +26,8 @@ resource "aws_db_instance" "default" {
   name                   = "mydb"
   username               = "root"
   password               = "funflip001"
-  parameter_group_name   = aws_db_parameter_group.default.name
-  db_subnet_group_name   = aws_db_subnet_group.default.name
+  parameter_group_name   = aws_db_parameter_group.default_parameter.name
+  db_subnet_group_name   = aws_db_subnet_group.default_subnet.name
   vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
   availability_zone      = aws_subnet.private_1.availability_zone
   skip_final_snapshot    = true
